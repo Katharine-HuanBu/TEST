@@ -1,0 +1,118 @@
+
+{% extends "base.html" %}
+{% block content %}
+    <h1>Delay</h1>
+    <div class="row">
+        <div class="col-md-5">
+            <img  src="/media/{{ house.picture }}" alt="" class="img-responsive img-thumbnail center-block">
+        </div>
+        <div class="col-md-7">
+            <ul class="list-group">
+                <li class="list-group-item">Name: {{ house.name }}</li>
+                <li class="list-group-item">Price: <span class="h4">{{ house.price }}</span></li>
+                <li class="list-group-item">Position: {{ house.position }}</li>
+                <li class="list-group-item">Area: {{ house.area }}</li>
+                <li class="list-group-item">Publish at: {{ house.create_at }}</li>
+                <li class="list-group-item text-center">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Delay</button>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <h3>Detail</h3>
+    <div>
+        {{ house.description }}
+    </div>
+
+    <!--  The terms of the contract -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Contract</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- TODO Article 1 of Contract -->
+                    {% include 'house/hetong.html' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="showQrCode()">I agree</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--  /The terms of the contract -->
+    <!-- Payment QR code -->
+        <div class="modal" tabindex="-1" role="dialog" id="payModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Qr Code</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <img src="/static/pay_qrcode.png" class="img-responsive center-block" alt="">
+                        </div>
+                        <div>
+                            <form class="form" id="pay-form" method="post" action="{% url 'delay' rent.id %}">
+                                <div class="form-group">
+                                    <label for="">Lease duration (months)</label> <!-- The length of lease -->
+                                    <input id="months" name="months" type="number" min=1, max=12 class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DeadLine</label>
+                                    {% csrf_token %}
+                                    <input id="deadline" type="date" name="deadline" class="form-control" readonly/>
+                                    <input type="hidden" name="bid" value="{{ house.id }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Total Money</label>
+                                    <input type="text" class="form-control" readonly id="total_money">
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="pay()">Pay</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    <!-- /Payment QR code -->
+    <script>
+        function showQrCode() {
+            $('#myModal').modal('hide');
+            // Pop-up QR code
+            $('#payModal').modal('show');
+        }
+        function pay() {
+            /**
+             * pay
+             */
+            if(!$('#months').val()) {
+                alert('Please Input the Months!');
+                return false;
+            }
+            $('#pay-form').submit();
+        }
+        var price = {{ house.price }};
+        $('#months').blur(function(){
+            var months = parseInt($(this).val());
+            if (months <= 0) {
+                alert('please input the months > 0');
+                return false;
+            }
+            var dealine = moment('{{ rent.deadline }}').add(months, 'month');
+            $('#deadline').val(dealine.format('YYYY-MM-DD'));
+            var r_price = price * months;
+            $('#total_money').val(r_price);
+        });
+    </script>
+{% endblock %}

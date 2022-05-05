@@ -1,0 +1,102 @@
+{% extends "admin:admin/index.html" %}
+{% load admin_tools_dashboard_tags %}
+{% block extrastyle %}
+    {{ block.super }}
+    {% block dashboard_css %}{% admin_tools_render_dashboard_css %}{% endblock %}
+    {% load static %}
+    <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
+    <script src="{% static '/js/jquery.js' %}"></script>
+    <script src="{% static '/js/bootstrap.js' %}"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+{% endblock %}
+{% block coltype %}{% endblock %}
+{% block bodyclass %}dashboard{% endblock %}
+{% block content_title %}{% endblock %}
+{% block content %}
+    <form method="get" class="form form-horizontal">
+
+        <div class="form-group">
+            <label class="col-md-2" class="sr-only">Start Time</label>
+            <div class="col-md-10">
+                <input type="text" name="start" id="start_time" />
+            </div>
+            <!-- TODO datetimepicker -->
+        </div>
+        <div class="form-group">
+            <label class="col-md-2" class="sr-only">End Time</label>
+            <div class="col-md-10">
+                <input type="text" name="end" id="end_time"/>
+            </div>
+            <!-- TODO datetimepicker -->
+        </div>
+        <script>
+            $(function(){
+                $('#start_time').datepicker({
+                    language: 'zh-CN'
+                });
+                $('#end_time').datepicker({
+                    language: 'zh-CN'
+                });
+            });
+        </script>
+        <div class=" text-center">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+    <hr>
+    <div class="result-area">
+        {% if qs.count > 0 %}
+            <table
+                data-toggle="table"
+                class="table table-bordered table-striped text-center"
+
+            >
+                <thead>
+                    <tr class="text-center">
+                        <th>Id</th>
+                        <th data-field="name">name</th>
+                        <th width="300" data-field="picture">picture</th>
+                        <th data-field="price">profit</th>
+                        <th data-field="area">area</th>
+                        <th data-field="position">position</th>
+                        <th data-field="create_at">pay time</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                {% for obj in qs %}
+                    <tr>
+                        <td>{{ obj.id }}</td>
+                        <td>{{ obj.house.name }}</td>
+                        <td  ><img src="/media/{{ obj.house.picture }}" width="200px" height="200px" alt="" class="img-responsive img-thumbnail center-block"></td>
+                        <td>{{ obj.total_money }}</td>
+                        <td>{{ obj.house.area }}</td>
+                        <td>{{ obj.house.position }}</td>
+                        <td>{{ obj.create_at }}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+            <div class="pull-right">
+                Total Profit: {{ p }}
+            </div>
+            {% else %}
+            <div class="alert alert-danger">
+                There is No Data for your research!
+            </div>
+        {% endif %}
+
+    </div>
+    <script>
+        $('input').addClass('form-control');
+        $('select').addClass('form-control');
+    </script>
+   
+{% endblock %}
+{% block sidebar %}{% endblock %}

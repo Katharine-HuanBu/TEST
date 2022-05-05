@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if message %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+    {% include 'account/style.html' %}
+    <div class="pad"></div>
+    <div class="login-form">
+    <form class="form-horizontal" method="post" action="{% url 'account:register' %}">
+        {% csrf_token %}
+        <h1 class="form-signin-heading text-center">Please Register An Account</h1>
+        <div class="form-group">
+            <label class="col-md-2" for="inputEmail" class="sr-only">Username</label>
+            <div class="col-md-10">
+                <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Username" required>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-2" for="password" class="sr-only">Password</label>
+            <div class="col-md-10">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-2" for="password2" class="sr-only">Repassword</label>
+            <div class="col-md-10">
+                <input type="password" name="repassword" id="password2" class="form-control" placeholder="Repassword" required>
+            </div>
+
+        </div>
+        <div class=" text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+        </div>
+{% endblock %}

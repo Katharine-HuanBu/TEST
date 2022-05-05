@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for key, error in user_form.errors.items %}
+             <div class="alert alert-danger">{{ key }} - {{ error}}</div>
+    {% endfor %}
+    {% include 'user/style.html' %}
+    <div class="pad"></div>
+    <div class="login-form">
+        <form class="form-horizontal" method="post" action="" >
+            {% csrf_token %}
+            <h1 class="form-signin-heading text-center">Welcome to Houses Booking System</h1>
+            <h1 class="form-signin-heading text-center">Please login！</h1>
+            {% for user in user_form %}
+                <div class="form-group" style="font-size=50px">
+                    <label class="col-md-2" class="sr-only">{{ user.label }}</label>
+                    <div class="col-md-8" style="font-size=50px">
+                        {{ user }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="text-center" style="font-size=50px">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+      
+      <script>
+          $(function(){
+              $('input').addClass('form-control');
+              $('select').addClass('form-control');
+          });
+
+          
+
+      </script>
+                
+                {% include 'user/change_capha.html' %}
+      </div>
+{% endblock %}

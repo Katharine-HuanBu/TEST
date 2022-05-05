@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booth Booking System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
+    <script src="{% static '/js/jquery.js' %}"></script>
+    <script src="{% static '/js/bootstrap.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Contacts
+            </div>
+            <div class="panel-body text-center">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>Wait to approve</h1>
+                        <h2>{{ contacts.wait_to_approve }}</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Deadline</h1>
+                        <h2>{{ contacts.deadline }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Booths
+            </div>
+            <div class="panel-body text-center">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h1>Total</h1>
+                        <h2>{{ booths.total }}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <h1>Empty</h1>
+                        <h2>{{ booths.empty }}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <h1>Rented</h1>
+                        <h2>{{ booths.used }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Profits
+            </div>
+            <div class="panel-body text-center">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>Month</h1>
+                        <h2>{{ profits.month }}</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Year</h1>
+                        <h2>{{ profits.year }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

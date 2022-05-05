@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if message %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+    {% include 'account/style.html' %}
+    <div class="pad"></div>
+    <div class="login-form">
+      <form class="form-horizontal" method="post" action="{% url 'account:login' %}">
+        {% csrf_token %}
+        <h1 class="form-signin-heading text-center">Welcome to Houses Booking System</h1>
+        <h1 class="form-signin-heading text-center">Please login！</h1>
+        <div class="form-group" style="font-size=50px">
+            <label class="col-md-2" for="inputEmail" class="sr-only">Usernmae</label>
+            <div class="col-md-8" style="font-size=50px">
+                <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Username" required >
+            </div>
+
+        </div>
+        <div class="form-group" style="font-size=50px">
+            <label class="col-md-2" for="password" class="sr-only">Password</label>
+            <div class="col-md-8" style="font-size=50px">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            </div>
+
+        </div>
+        <div class=" text-center" style="font-size=50px">
+            <button type="submit" class="btn btn-primary">Login</button>
+            <a class="btn btn-primary" href="{% url 'account:register' %}">Register</a>
+        </div>
+      </form>
+    </div>
+{% endblock %}

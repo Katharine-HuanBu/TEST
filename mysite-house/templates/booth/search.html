@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method="get" class="form form-horizontal" style="padding-top:40px;">
+        {% for exp in filter.form %}
+            <div class="form-group">
+                <label class="col-md-2" class="sr-only">{{ exp.label }}</label>
+                <div class="col-md-10">
+                    {{ exp }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class=" text-center">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+    <hr>
+    <div class="result-area">
+        {% if filter.qs.count > 0 %}
+            <table 
+                id="search-result-area"
+                data-toggle="table"
+                class="table table-bordered table-striped text-center" 
+                data-sortable="true"
+                border="3"
+
+            >
+                <thead>
+                    <tr class="text-center">
+                        <!-- <th data-field="name">name</th>
+                        <th width="300" data-field="picture">picture</th>
+                        <th data-field="price">price</th>
+                        <th data-field="area">area</th>
+                        <th data-field="position">position</th>
+                        <th data-field="create_at">publish at</th> -->
+                        <th data-field="action">action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <!-- {% for obj in filter.qs %}
+                    <tr>
+                        <td>{{ obj.name }}</td>
+                        <td  ><img src="/media/{{ obj.picture }}" alt="" class="img-responsive img-thumbnail center-block"></td>
+                        <td>{{ obj.price }}</td>
+                        <td>{{ obj.area }}</td>
+                        <td>{{ obj.position }}</td>
+                        <td>{{ obj.create_at }}</td>
+                        <td><a href="{% url 'detail' obj.id %}">Detail</a></td>
+                    </tr>
+                   
+                {% endfor %} -->
+                </tbody>
+            </table>
+
+        {% endif %}
+    </div>
+    <script>
+        $('input').addClass('form-control');
+        $('select').addClass('form-control');
+    </script>
+    <script>
+        $(function(){
+            /**
+             * https://www.cnblogs.com/laowangc/p/8875526.html
+             * https://www.bootstrap-table.com.cn/examples/welcome/group-columns/
+             */ 
+            $('#search-result-area').bootstrapTable({
+                columns: [
+                    {
+                        field: 'name',//域值
+                        title: 'name',//标题
+                        visible: true,//false表示不显示
+                        sortable: true,//启用排序
+                    },
+                    {
+                        field: 'picture',//域值
+                        title: 'picture',//标题
+                        visible: true,//false表示不显示
+                        formatter : function (value, row, index) {
+                            return "<img style='width:200px;' class='img-responsive img-thumbnail center-block' src='/media/"+value+"' alt=''>"
+                        }
+                    },
+                    {
+                        field: 'price',
+                        title: 'price',
+                        sortable: true,//启用排序
+                    },
+                    {
+                        field: 'area',
+                        title: 'area',
+                        sortable: true,//启用排序
+                    },
+                    {
+                        field: 'position',
+                        title: 'position',
+                        sortable: true,//启用排序
+                    },
+                    {
+                        field: 'create_at',
+                        title: 'publish_at',
+                        sortable: true,//启用排序
+                    },
+                    {
+                        field: 'action',
+                        title: 'action',
+                        formatter : function (value, row, index) {
+                            return "<a href='/detail/" +  row['id'] +   "' >detail</a>";
+                        }
+                    }
+                ],
+                data: {{ table_data|safe }}
+            });
+        });
+        
+    </script>
+{% endblock %}
